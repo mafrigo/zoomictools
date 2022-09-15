@@ -1,4 +1,5 @@
 import yaml
+from pathlib import Path
 
 
 def getproperties(parentlabel):
