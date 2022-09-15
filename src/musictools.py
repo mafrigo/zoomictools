@@ -5,7 +5,7 @@ import yaml
 from pathlib import Path
 
 from .snap_format_adapter import shift_parts
-from .main import getproperties
+from .read_config import getproperties
 
 
 def musicgadget3(haloid, parentlabel, highestres=10, initialpad=8, regionmode='ellipsoid', parentres=None,

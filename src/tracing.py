@@ -4,7 +4,7 @@ from subprocess import call
 import pygad
 
 from .rockstartools import readRockstarHaloTree
-from .main import getproperties
+from .read_config import getproperties
 
 def trace(haloid, parentlabel, eps=10., eps2=300., tracefactor=2., preemptivecut=True, nmax=94, npp=0,
           haloloctype='zit', halolocfile=None, snaps_to_be_traced="all", forcegc=False, outputdir='.'):
