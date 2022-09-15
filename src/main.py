@@ -2,10 +2,7 @@ import numpy as np
 from subprocess import call
 import os.path
 from tracing import trace
-from musictools import musicgadget3, writemusicparam
-from rockstartools import rockstarselect, readRockstarHaloTree
-from diagnostics import boxview, zoomindiag
-from snap_format_adapter import shift_parts, subfiletofile
+from musictools import musicgadget3
 
 
 def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing', skiptracing=True):
