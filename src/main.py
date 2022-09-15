@@ -21,7 +21,7 @@ def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing'
      skiptracing    : If True, the tracing is skipped when there is already a position list for the specified halo.
     """
     if outputdir == "default":
-        outputdir = Path(__file__).parent / "../" + parentlabel
+        outputdir = str(Path(__file__).parent) + parentlabel
         os.mkdir(outputdir)
     poslistdir, snapfilebase, ICfile, cosmology, boxsize, zstart, seedsset, parentres, lowestres = getproperties(
         parentlabel)
