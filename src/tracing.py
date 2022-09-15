@@ -2,11 +2,12 @@ import numpy as np
 import os
 from subprocess import call
 import pygad
-from rockstartools import readRockstarHaloTree
-from main import getproperties
+
+from .rockstartools import readRockstarHaloTree
+from .main import getproperties
 
 def trace(haloid, parentlabel, eps=10., eps2=300., tracefactor=2., preemptivecut=True, nmax=94, npp=0,
-          haloloctype='zit', halolocfile=None, snaps_to_be_traced="all", forcegc=False):
+          haloloctype='zit', halolocfile=None, snaps_to_be_traced="all", forcegc=False, outputdir='.'):
     """
     Traces a halo in an uniform dark matter only simulation from a given snapshot to the initial conditions,
                and saves the positions of the particles which end up forming the halo.

@@ -1,10 +1,11 @@
 import numpy as np
 from subprocess import call
 import os
-from tracing import trace
-from musictools import musicgadget3
 import yaml
 from pathlib import Path
+
+from .tracing import trace
+from .musictools import musicgadget3
 
 
 def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing', skiptracing=True,
