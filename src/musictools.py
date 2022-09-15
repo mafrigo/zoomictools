@@ -68,7 +68,7 @@ def musicgadget3(haloid, parentlabel, highestres=10, initialpad=8, regionmode='e
 
 def writemusicparam(haloid, highestres=11, parentres=9, lowestres=4, regionmode='ellipsoid',
                     filename="param_zoominC.inp", padding=8, poslistdir='/ptmp/mpa/mfrigo/musicsims/parent3',
-                    baryons='yes', seedsset='matteo', boxsize=72, cosmology='planck', zstart=43.029476,
+                    baryons='yes', seedsset=[], boxsize=72, cosmology='planck', zstart=43.029476,
                     numfiles=1, outname='./ICraw.gdt'):
     """
     Writes a music parameter file.
@@ -92,12 +92,7 @@ def writemusicparam(haloid, highestres=11, parentres=9, lowestres=4, regionmode=
 
     Additional parameters are hard-coded into this function: initial redshift, cosmological parameters,...
     """
-    if seedsset == 'matteo':
-        seeds = [12345, 23336, 34567, 12146, 23111, 24343, 45454, 87654, 98765,
-                 34987]  # seeds for levels 7,8,9,10,11,12,13,14,15,16
-    if seedsset == 'ludwig':
-        seeds = [12345, 23456, 34567, 90341, 56789, 67890, 45454, 87654, 98765,
-                 34987]  # (LUDWIG sim) seeds for levels 7,8,9,10,11,12; I added the others
+    seeds = seedsset
     if cosmology == 'planck':
         cospam = [0.307, 0.693, 0.0483, 67.77, 0.8288, 0.9611]  # Omega_m, Omega_L, Omega_b, H0, sigma_8, nspec
     if cosmology == 'wmap':

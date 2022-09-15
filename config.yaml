@@ -1,4 +1,4 @@
-music_exec: "music"
+music_exec: "MUSIC"
 parent_setups:
   parent3:
     poslistdir: '/ptmp/mpa/mfrigo/musicsims/parent3/'
@@ -7,16 +7,18 @@ parent_setups:
     cosmology: 'planck'
     boxsize: 72
     zstart: 43.029476
-    seedsset: 'matteo'
+    seedsset: [12345, 23336, 34567, 12146, 23111, 24343, 45454, 87654, 98765, 34987]
     parentres: 9
     lowestres: 4
   P200:
     poslistdir: '/ptmp/mpa/mhirsch/P200/'
-    snapfilebase: ["/ptmp/mpa/loser/SIMULATIONS/P200/snapdir_", "/snap_P200_"]
+    snapfilebase:
+      - "/ptmp/mpa/loser/SIMULATIONS/P200/snapdir_"
+      - "/snap_P200_"
     ICfile: "/ptmp/mpa/loser/SIMULATIONS/P200/IC/ics_200Mpc_planck.dat"
     cosmology: 'planck'
     boxsize: 135.54
     zstart: 63.
-    seedsset: 'ludwig'
+    seedsset: [12345, 23456, 34567, 90341, 56789, 67890, 45454, 87654, 98765, 34987]
     parentres: 10
     lowestres: 5

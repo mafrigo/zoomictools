@@ -7,7 +7,7 @@ import yaml
 import pathlib
 
 
-def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing', skiptracing=True):
+def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing', skiptracing=True, outputdir='default'):
     """
     Script to trace a halo in the parent simulation and creating the zoom-in ICs for it.
     You can set additional parameters for the single routines are in the code.
@@ -29,7 +29,7 @@ def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing'
 
 
 def multipleICcreator(parentlabel, zoominlevel=11, halolistfolder='./halotracing', startingatnumber=0,
-                      skiptracing=True):
+                      skiptracing=True, outputdir='default'):
     """
     Creates ICs for all the halos listed in a halo list file.
 
