@@ -2,7 +2,7 @@ import numpy as np
 from subprocess import call
 import os.path
 import yaml
-import pathlib
+from pathlib import Path
 from snap_format_adapter import shift_parts
 from main import getproperties
 
@@ -26,7 +26,6 @@ def musicgadget3(haloid, parentlabel, highestres=10, initialpad=8, regionmode='e
      poslistdir  : Directory where the position list files are stored. If None, picks the one from getproperties.
      outputdir   : Directory where the output IC is stored
     """
-    from pathlib import Path
     config_path = Path(__file__).parent / "../config.yaml"
     with open(config_path, "r") as ymlfile:
         cfg = yaml.load(ymlfile)
