@@ -22,7 +22,7 @@ def shift_parts(infname='ICraw.gdt', outfname='IC.gdt', toGroup=[3, 4, 5], icfor
         if not os.path.exists(infname + '.0'):
             raise IOError("File " + infname + " does not exist")
         else:
-            header = _read_header(infname + '.0')
+            header = _read_header(infname + '.0', icform=icform)
             Nfiles = header["num_files"]
             print("Number of subfiles: " + str(Nfiles))
             infnamelist = [infname + '.' + str(i) for i in np.arange(Nfiles)]
@@ -39,7 +39,7 @@ def shift_parts(infname='ICraw.gdt', outfname='IC.gdt', toGroup=[3, 4, 5], icfor
         with open(outfname, "w") as outf, open(infname, "r") as inf:
 
             print("Merging groups %s in file \"%s\", writing to \"%s\"" % (str(toGroup), infname, outfname))
-            header = _read_header(infname)
+            header = _read_header(infname, icform=icform)
             print(header)
             _print_header_simple(header, infname)
 
@@ -48,7 +48,7 @@ def shift_parts(infname='ICraw.gdt', outfname='IC.gdt', toGroup=[3, 4, 5], icfor
             inf.seek(0, 0)
 
             # read header block from infile to modify
-            newHeader = _read_block(inf, headerType)
+            newHeader = _read_block(inf, headerType, icform=icform)
 
             floatType = np.dtype("f8") if newHeader['flag_doubleprecision'] else np.dtype("f4")
             idType = np.dtype("u4")
@@ -79,20 +79,20 @@ def shift_parts(infname='ICraw.gdt', outfname='IC.gdt', toGroup=[3, 4, 5], icfor
             allMassesEqual = not np.sum(np.abs(np.diff(masses)))
 
             # write changed header
-            _write_block(outf, newHeader)
+            _write_block(outf, newHeader, icform=icform)
 
             # read/write positions
-            _write_block(outf, _read_block(inf, floatType))
+            _write_block(outf, _read_block(inf, floatType), icform=icform)
             print(inf.tell())
             # read/write velocities
-            _write_block(outf, _read_block(inf, floatType))
+            _write_block(outf, _read_block(inf, floatType), icform=icform)
             print(inf.tell())
             # read/write IDs
-            _write_block(outf, _read_block(inf, idType))
+            _write_block(outf, _read_block(inf, idType), icform=icform)
             print(inf.tell())
             # read masses if there are any
             if np.sum(withMassBlock):
-                oldMasses = _read_block(inf, floatType)
+                oldMasses = _read_block(inf, floatType, icform=icform)
             print(inf.tell())
             # create new sub-blocks if needed
             if not allMassesEqual:
@@ -122,7 +122,7 @@ def shift_parts(infname='ICraw.gdt', outfname='IC.gdt', toGroup=[3, 4, 5], icfor
             if np.sum(withMassBlock) or not allMassesEqual:
                 print(newMasses)
                 if len(newMasses) > 0 or newHeader["npart3"] != 0:
-                    _write_block(outf, newMasses)
+                    _write_block(outf, newMasses, icform=icform)
                 else:
                     print("There might be a problem")
 
@@ -130,10 +130,10 @@ def shift_parts(infname='ICraw.gdt', outfname='IC.gdt', toGroup=[3, 4, 5], icfor
             if newHeader["npart0"] != 0:
                 while not inf.tell() >= inflen:
                     print("Copied additional block.")
-                    additionalblocks = _read_block(inf, np.dtype("S1"))
+                    additionalblocks = _read_block(inf, np.dtype("S1"), icform=icform)
                     print(additionalblocks)
                     if len(additionalblocks) > 0:
-                        _write_block(outf, additionalblocks)
+                        _write_block(outf, additionalblocks, icform=icform)
     print("IC file created!")
 
 
@@ -237,20 +237,20 @@ def _print_header_simple(header, fname):
     print("\n")
 
 
-def subfiletofile(file, outfname=None):
+def subfiletofile(file, outfname=None, icform=1):
     if outfname is None:
         outfname = "out" + file
     with open(outfname, "w") as outf, open(file, "r") as inf:
         inf.seek(0, 2)
         inflen = inf.tell()
         inf.seek(0, 0)
-        newHeader = _read_block(inf, headerType)  # read header block from infile to modify
+        newHeader = _read_block(inf, headerType, icform=icform)  # read header block from infile to modify
         newHeader["num_files"] = 1
         for i in np.arange(6):
             newHeader["npartTotal%i" % i] = newHeader["npart%i" % i]
         _print_header_simple(newHeader, outfname)
-        _write_block(outf, newHeader)  # write changed header
+        _write_block(outf, newHeader, icform=icform)  # write changed header
         while not inf.tell() >= inflen:
             print("Copied additional block.")
-            additionalblocks = _read_block(inf, np.dtype("S1"))
-            _write_block(outf, additionalblocks)
+            additionalblocks = _read_block(inf, np.dtype("S1"), icform=icform)
+            _write_block(outf, additionalblocks, icform=icform)
