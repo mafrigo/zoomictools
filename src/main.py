@@ -70,7 +70,6 @@ def getproperties(parentlabel):
 
     Feel free to add options for more parent sims.
     """
-    labelrecognized = False
     if parentlabel == 'parent3':
         poslistdir = '/ptmp/mpa/mfrigo/musicsims/parent3/'
         snapfilebase = '/ptmp/mpa/mfrigo/musicsims/parent3/snap_parent_'
@@ -81,10 +80,8 @@ def getproperties(parentlabel):
         seedsset = 'matteo'
         parentres = 9
         lowestres = 4
-        labelrecognized = True
-    if parentlabel == 'P200':
-        #    poslistdir='/ptmp/mpa/mhirsch/P200/'
-        poslistdir = './'
+    elif parentlabel == 'P200':
+        poslistdir = '/ptmp/mpa/mhirsch/P200/'
         snapfilebase = ["/ptmp/mpa/loser/SIMULATIONS/P200/snapdir_", "/snap_P200_"]
         ICfile = "/ptmp/mpa/loser/SIMULATIONS/P200/IC/ics_200Mpc_planck.dat"
         cosmology = 'planck'
@@ -93,7 +90,6 @@ def getproperties(parentlabel):
         seedsset = 'ludwig'
         parentres = 10
         lowestres = 5
-        labelrecognized = True
-    if labelrecognized == False:
+    else:
         raise IOError('Label of parent simulation not recognized.')
     return poslistdir, snapfilebase, ICfile, cosmology, boxsize, zstart, seedsset, parentres, lowestres
