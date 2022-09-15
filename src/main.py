@@ -3,6 +3,7 @@ from subprocess import call
 import os.path
 from tracing import trace
 from musictools import musicgadget3
+import yaml
 
 
 def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing', skiptracing=True):
@@ -52,7 +53,8 @@ def multipleICcreator(parentlabel, zoominlevel=11, halolistfolder='./halotracing
 
 def getproperties(parentlabel):
     """
-    Function that contains the properties of the parent simulations we use. For a given parent label, returns:
+    Function that reads the properties of the parent simulations in use from config.yaml.
+    For a given parent label, it returns:
 
      poslistdir   : Directory of the position list files.
      snapfilebase : Name/path of the snapshot files (without the number). If you have multiple subsnapshots, put it
@@ -67,26 +69,11 @@ def getproperties(parentlabel):
 
     Feel free to add options for more parent sims.
     """
-    if parentlabel == 'parent3':
-        poslistdir = '/ptmp/mpa/mfrigo/musicsims/parent3/'
-        snapfilebase = '/ptmp/mpa/mfrigo/musicsims/parent3/snap_parent_'
-        ICfile = '/ptmp/mpa/mfrigo/musicsims/parent3/parent.gdt'
-        cosmology = 'planck'
-        boxsize = 72
-        zstart = 43.029476
-        seedsset = 'matteo'
-        parentres = 9
-        lowestres = 4
-    elif parentlabel == 'P200':
-        poslistdir = '/ptmp/mpa/mhirsch/P200/'
-        snapfilebase = ["/ptmp/mpa/loser/SIMULATIONS/P200/snapdir_", "/snap_P200_"]
-        ICfile = "/ptmp/mpa/loser/SIMULATIONS/P200/IC/ics_200Mpc_planck.dat"
-        cosmology = 'planck'
-        boxsize = 135.54
-        zstart = 63.
-        seedsset = 'ludwig'
-        parentres = 10
-        lowestres = 5
-    else:
-        raise IOError('Label of parent simulation not recognized.')
-    return poslistdir, snapfilebase, ICfile, cosmology, boxsize, zstart, seedsset, parentres, lowestres
+
+    with open("../config.yaml", "r") as ymlfile:
+        cfg = yaml.load(ymlfile)
+    for section in cfg:
+        if parentlabel == section:
+            return section["poslistdir"], section["snapfilebase"], section["ICfile"], section["cosmology"], \
+                   section["boxsize"], section["zstart"], section["seedsset"], section["parentres"], section["lowestres"]
+    raise IOError("parentlabel " + str(parentlabel) + " does not match any label in config.yaml")
