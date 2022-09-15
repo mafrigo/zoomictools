@@ -1,0 +1,3 @@
+numpy~=1.23.2
+matplotlib
+git+https://bitbucket.org/broett/pygad.git@master#egg=pygad
