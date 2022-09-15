@@ -1,9 +1,10 @@
 import numpy as np
 from subprocess import call
-import os.path
+import os
 from tracing import trace
 from musictools import musicgadget3
 import yaml
+import pathlib
 
 
 def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing', skiptracing=True):
@@ -69,8 +70,9 @@ def getproperties(parentlabel):
 
     Feel free to add options for more parent sims.
     """
-
-    with open("../config.yaml", "r") as ymlfile:
+    from pathlib import Path
+    config_path = Path(__file__).parent / "../config.yaml"
+    with open(config_path, "r") as ymlfile:
         cfg = yaml.load(ymlfile)
     for section in cfg["parent_setups"]:
         if parentlabel == section.key:

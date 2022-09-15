@@ -2,6 +2,7 @@ import numpy as np
 from subprocess import call
 import os.path
 import yaml
+import pathlib
 from snap_format_adapter import shift_parts
 from main import getproperties
 
@@ -24,7 +25,9 @@ def musicgadget3(haloid, parentlabel, highestres=10, initialpad=8, regionmode='e
      lowestres   : Minimum resolution level of the IC file. If None, picks the one from getproperties.
      poslistdir  : Directory where the position list files are stored. If None, picks the one from getproperties.
     """
-    with open("../config.yaml", "r") as ymlfile:
+    from pathlib import Path
+    config_path = Path(__file__).parent / "../config.yaml"
+    with open(config_path, "r") as ymlfile:
         cfg = yaml.load(ymlfile)
         music_exec = cfg["music_exec"]
     poslistdir0, snapfilebase, ICfile, cosmology, boxsize, zstart, seedsset, parentres0, lowestres0 = getproperties(
