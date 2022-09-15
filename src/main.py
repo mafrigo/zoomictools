@@ -7,7 +7,8 @@ import yaml
 from pathlib import Path
 
 
-def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing', skiptracing=True, outputdir='default'):
+def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing', skiptracing=True,
+             outputdir='default'):
     """
     Script to trace a halo in the parent simulation and creating the zoom-in ICs for it.
     You can set additional parameters for the single routines are in the code.
@@ -26,7 +27,7 @@ def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing'
         trace(haloid, parentlabel=parentlabel, halolocfile=halolistfolder + '/halo' + str(haloid) + '.txt')
         call(["cp", "poslist" + str(haloid) + ".txt", poslistdir])
     if outputdir == "default":
-        outputdir = Path(__file__).parent / "../"+parentlabel
+        outputdir = Path(__file__).parent / "../" + parentlabel
         os.mkdir(outputdir)
 
     musicgadget3(haloid, parentlabel=parentlabel, highestres=zoominlevel, initialpad=6, regionmode='ellipsoid',
@@ -77,9 +78,11 @@ def getproperties(parentlabel):
     """
     config_path = Path(__file__).parent / "../config.yaml"
     with open(config_path, "r") as ymlfile:
-        cfg = yaml.load(ymlfile)
+        cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
     for section in cfg["parent_setups"]:
-        if parentlabel == section.key:
-            return section["poslistdir"], section["snapfilebase"], section["ICfile"], section["cosmology"], \
-                   section["boxsize"], section["zstart"], section["seedsset"], section["parentres"], section["lowestres"]
+        if parentlabel == section:
+            config_dict = cfg["parent_setups"][section]
+            return config_dict["poslistdir"], config_dict["snapfilebase"], config_dict["ICfile"], \
+                   config_dict["cosmology"], config_dict["boxsize"], config_dict["zstart"], config_dict["seedsset"], \
+                   config_dict["parentres"], config_dict["lowestres"]
     raise IOError("parentlabel " + str(parentlabel) + " does not match any label in config.yaml")

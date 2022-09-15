@@ -28,7 +28,7 @@ def musicgadget3(haloid, parentlabel, highestres=10, initialpad=8, regionmode='e
     """
     config_path = Path(__file__).parent / "../config.yaml"
     with open(config_path, "r") as ymlfile:
-        cfg = yaml.load(ymlfile)
+        cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
         music_exec = cfg["music_exec"]
     poslistdir0, snapfilebase, ICfile, cosmology, boxsize, zstart, seedsset, parentres0, lowestres0 = getproperties(
         parentlabel)
