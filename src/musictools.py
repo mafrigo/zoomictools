@@ -1,6 +1,9 @@
 import numpy as np
 from subprocess import call
+import os.path
+import yaml
 from snap_format_adapter import shift_parts
+from main import getproperties
 
 
 def musicgadget3(haloid, parentlabel, highestres=10, initialpad=8, regionmode='ellipsoid', parentres=None,
@@ -21,7 +24,9 @@ def musicgadget3(haloid, parentlabel, highestres=10, initialpad=8, regionmode='e
      lowestres   : Minimum resolution level of the IC file. If None, picks the one from getproperties.
      poslistdir  : Directory where the position list files are stored. If None, picks the one from getproperties.
     """
-    import os.path
+    with open("../config.yaml", "r") as ymlfile:
+        cfg = yaml.load(ymlfile)
+        music_exec = cfg["music_exec"]
     poslistdir0, snapfilebase, ICfile, cosmology, boxsize, zstart, seedsset, parentres0, lowestres0 = getproperties(
         parentlabel)
     if poslistdir == None:
@@ -41,7 +46,7 @@ def musicgadget3(haloid, parentlabel, highestres=10, initialpad=8, regionmode='e
                         poslistdir=poslistdir, regionmode=regionmode, seedsset=seedsset, boxsize=boxsize,
                         cosmology=cosmology, zstart=zstart, numfiles=numfiles,
                         outname='ICraw' + str(haloid) + '_' + str(highestres) + '.gdt')
-        call(["MUSIC", "param_zoominC.inp"])
+        call([music_exec, "param_zoominC.inp"])
         if os.path.isfile("ICraw" + str(haloid) + "_" + str(highestres) + ".gdt") or os.path.isfile(
                 "ICraw" + str(haloid) + "_" + str(highestres) + ".gdt.0"):
             foundmaxpad = True

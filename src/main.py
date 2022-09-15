@@ -72,8 +72,8 @@ def getproperties(parentlabel):
 
     with open("../config.yaml", "r") as ymlfile:
         cfg = yaml.load(ymlfile)
-    for section in cfg:
-        if parentlabel == section:
+    for section in cfg["parent_setups"]:
+        if parentlabel == section.key:
             return section["poslistdir"], section["snapfilebase"], section["ICfile"], section["cosmology"], \
                    section["boxsize"], section["zstart"], section["seedsset"], section["parentres"], section["lowestres"]
     raise IOError("parentlabel " + str(parentlabel) + " does not match any label in config.yaml")
