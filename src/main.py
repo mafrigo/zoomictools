@@ -20,6 +20,9 @@ def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing'
      halolistfolder : Folder containing the halolist.txt file and the halo tracing files.
      skiptracing    : If True, the tracing is skipped when there is already a position list for the specified halo.
     """
+    if outputdir == "default":
+        outputdir = Path(__file__).parent / "../" + parentlabel
+        os.mkdir(outputdir)
     poslistdir, snapfilebase, ICfile, cosmology, boxsize, zstart, seedsset, parentres, lowestres = getproperties(
         parentlabel)
     if os.path.isfile(poslistdir + "/poslist" + str(haloid) + ".txt") and skiptracing:
@@ -27,9 +30,6 @@ def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing'
     else:
         trace(haloid, parentlabel=parentlabel, halolocfile=halolistfolder + '/halo' + str(haloid) + '.txt')
         call(["cp", "poslist" + str(haloid) + ".txt", poslistdir])
-    if outputdir == "default":
-        outputdir = Path(__file__).parent / "../" + parentlabel
-        os.mkdir(outputdir)
 
     musicgadget3(haloid, parentlabel=parentlabel, highestres=zoominlevel, initialpad=6, regionmode='ellipsoid',
                  outputdir=outputdir)

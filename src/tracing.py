@@ -91,38 +91,41 @@ def trace(haloid, parentlabel, eps=10., eps2=300., tracefactor=2., preemptivecut
                 idlist0 = []
                 while nextfileexists:
                     print("Opening subfile number " + str(i))
-                    with _partialSnap(filename + '.' + str(i)) as s:  # Loading snapshot subfiles separately
-                        if np.min(np.sqrt(np.sum((s["pos"] - halocenter) ** 2, axis=1))) < (1.5 * tracefactor * r200 + eps):
-                            ball = s[pygad.BallMask(R=str(tracefactor * r200 + eps) + ' ckpc h_0**-1',
-                                                    center=halocenter)]  # Cutting snapshot at 2 virial radii from halo center
-                            idlist0 = idlist0 + list(ball["ID"])  # getting the halo IDs in this snapshot
-                            print("Updated number of halo particles: " + str(len(idlist0)))
+                    s = _partialSnap(filename + '.' + str(i))
+                    if np.min(np.sqrt(np.sum((s["pos"] - halocenter) ** 2, axis=1))) < (1.5 * tracefactor * r200 + eps):
+                        ball = s[pygad.BallMask(R=str(tracefactor * r200 + eps) + ' ckpc h_0**-1',
+                                                center=halocenter)]  # Cutting snapshot at 2 virial radii from halo center
+                        idlist0 = idlist0 + list(ball["ID"])  # getting the halo IDs in this snapshot
+                        print("Updated number of halo particles: " + str(len(idlist0)))
+                    del s
                     i = i + 1
                     nextfileexists = os.path.exists(filename + '.' + str(i))
             else:
-                with pygad.Snap(filename) as s:  # Loading snapshot
-                    ball = s[pygad.BallMask(R=str(tracefactor * r200 + eps) + ' ckpc h_0**-1',
-                                            center=halocenter)]  # ' kpc',center=halocenter,fullsph=True)]   #Cutting snapshot at 2 virial radii from halo center
-                idlist0 = list(ball["ID"])  # getting the halo IDs in this snapshot
-        else:
-            with pygad.Snap(filename) as s:  # Loading snapshot
-                if r200 < 50.:
-                    r200 = 50.  # just in case r200 goes to 0
-                if preemptivecut:
-                    s = s[pygad.BallMask(R=str(np.max([50. * r200, 20000])) + ' ckpc h_0**-1',
-                                         center=halocenter)]  # cutting snapshot at 20 Mpc for faster computation
-                if len(idlist) > 0:  # Calculating new halo center
-                    halocenter = pygad.analysis.center_of_mass(s[pygad.IDMask(idlist)])  # oldball)
-                    halocenter = pygad.analysis.shrinking_sphere(s, halocenter, R=tracefactor * r200, periodic=True,
-                                                                 shrink_factor=0.93, stop_N=13)
-                r200, m200 = pygad.analysis.virial_info(s, center=halocenter)  # Calculating virial radius
-                try:
-                    r200 = r200.value()
-                except AttributeError:
-                    r200 = r200.item()
+                s = pygad.Snap(filename) # Loading snapshot
                 ball = s[pygad.BallMask(R=str(tracefactor * r200 + eps) + ' ckpc h_0**-1',
-                                        center=halocenter)]  # ' kpc',center=halocenter,fullsph=True)]   #Cutting snapshot at 2 virial radii from halo center
+                                        center=halocenter)]  #Cutting snapshot at 2 virial radii from halo center
                 idlist0 = list(ball["ID"])  # getting the halo IDs in this snapshot
+                del s
+        else:
+            s = pygad.Snap(filename)
+            if r200 < 50.:
+                r200 = 50.  # just in case r200 goes to 0
+            if preemptivecut:
+                s = s[pygad.BallMask(R=str(np.max([50. * r200, 20000])) + ' ckpc h_0**-1',
+                                     center=halocenter)]  # cutting snapshot at 20 Mpc for faster computation
+            if len(idlist) > 0:  # Calculating new halo center
+                halocenter = pygad.analysis.center_of_mass(s[pygad.IDMask(idlist)])  # oldball)
+                halocenter = pygad.analysis.shrinking_sphere(s, halocenter, R=tracefactor * r200, periodic=True,
+                                                             shrink_factor=0.93, stop_N=13)
+            r200, m200 = pygad.analysis.virial_info(s, center=halocenter)  # Calculating virial radius
+            try:
+                r200 = r200.value()
+            except AttributeError:
+                r200 = r200.item()
+            ball = s[pygad.BallMask(R=str(tracefactor * r200 + eps) + ' ckpc h_0**-1',
+                                    center=halocenter)]  # ' kpc',center=halocenter,fullsph=True)]   #Cutting snapshot at 2 virial radii from halo center
+            idlist0 = list(ball["ID"])  # getting the halo IDs in this snapshot
+            del s
         print('Ball center: ' + str(halocenter))
         print('r200: ' + str(r200) + ', m200: ' + str(m200))
         print(str(len(idlist0)) + ' particles within ' + str(tracefactor) + '*R200')
