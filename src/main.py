@@ -4,7 +4,7 @@ import os
 from tracing import trace
 from musictools import musicgadget3
 import yaml
-import pathlib
+from pathlib import Path
 
 
 def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing', skiptracing=True, outputdir='default'):
@@ -25,7 +25,12 @@ def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing'
     else:
         trace(haloid, parentlabel=parentlabel, halolocfile=halolistfolder + '/halo' + str(haloid) + '.txt')
         call(["cp", "poslist" + str(haloid) + ".txt", poslistdir])
-    musicgadget3(haloid, parentlabel=parentlabel, highestres=zoominlevel, initialpad=6, regionmode='ellipsoid')
+    if outputdir == "default":
+        outputdir = Path(__file__).parent / "../"+parentlabel
+        os.mkdir(outputdir)
+
+    musicgadget3(haloid, parentlabel=parentlabel, highestres=zoominlevel, initialpad=6, regionmode='ellipsoid',
+                 outputdir=outputdir)
 
 
 def multipleICcreator(parentlabel, zoominlevel=11, halolistfolder='./halotracing', startingatnumber=0,
@@ -46,7 +51,7 @@ def multipleICcreator(parentlabel, zoominlevel=11, halolistfolder='./halotracing
         if i >= startingatnumber:
             print('\n \n Constructing IC number: ' + str(i))
             try:
-                createIC(int(i), parentlabel, zoominlevel, halolistfolder, skiptracing)
+                createIC(int(i), parentlabel, zoominlevel, halolistfolder, skiptracing, outputdir)
                 call(['mv', 'IC' + str(int(i)) + '.gdt', 'ZoomICsLevel' + str(zoominlevel)])
             except MemoryError:
                 print("Could not create IC for this halo. Possibly a memory error in the tracing.")
@@ -70,7 +75,6 @@ def getproperties(parentlabel):
 
     Feel free to add options for more parent sims.
     """
-    from pathlib import Path
     config_path = Path(__file__).parent / "../config.yaml"
     with open(config_path, "r") as ymlfile:
         cfg = yaml.load(ymlfile)

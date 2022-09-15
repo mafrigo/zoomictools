@@ -8,7 +8,7 @@ from main import getproperties
 
 
 def musicgadget3(haloid, parentlabel, highestres=10, initialpad=8, regionmode='ellipsoid', parentres=None,
-                 lowestres=None, poslistdir=None):
+                 lowestres=None, poslistdir=None, outputdir="."):
     """
     Convenience function that creates MUSIC parameter file for a given halo, runs MUSIC and then merges the
     particle groups 3,4,5 in order to obtain an initial condition file to be used with Gadget3.
@@ -24,6 +24,7 @@ def musicgadget3(haloid, parentlabel, highestres=10, initialpad=8, regionmode='e
      parentres   : Resolution level of the parent simulation. If None, picks the one from getproperties.
      lowestres   : Minimum resolution level of the IC file. If None, picks the one from getproperties.
      poslistdir  : Directory where the position list files are stored. If None, picks the one from getproperties.
+     outputdir   : Directory where the output IC is stored
     """
     from pathlib import Path
     config_path = Path(__file__).parent / "../config.yaml"
@@ -32,11 +33,11 @@ def musicgadget3(haloid, parentlabel, highestres=10, initialpad=8, regionmode='e
         music_exec = cfg["music_exec"]
     poslistdir0, snapfilebase, ICfile, cosmology, boxsize, zstart, seedsset, parentres0, lowestres0 = getproperties(
         parentlabel)
-    if poslistdir == None:
+    if poslistdir is None:
         poslistdir = poslistdir0
-    if parentres == None:
+    if parentres is None:
         parentres = parentres0
-    if lowestres == None:
+    if lowestres is None:
         lowestres = lowestres0
     pad = initialpad
     foundmaxpad = False
@@ -44,7 +45,7 @@ def musicgadget3(haloid, parentlabel, highestres=10, initialpad=8, regionmode='e
     numfiles = 1
     if highestres >= 13:
         numfiles = 16
-    while foundmaxpad == False:
+    while not foundmaxpad:
         writemusicparam(haloid, highestres, parentres, lowestres, padding=pad, filename="param_zoominC.inp",
                         poslistdir=poslistdir, regionmode=regionmode, seedsset=seedsset, boxsize=boxsize,
                         cosmology=cosmology, zstart=zstart, numfiles=numfiles,
@@ -58,9 +59,9 @@ def musicgadget3(haloid, parentlabel, highestres=10, initialpad=8, regionmode='e
             if pad == 0:
                 print("MUSIC fails to create the ICs with every padding value (perhaps the halo is too big for this boxsize?)")
                 break
-    shift_parts(infname='ICraw' + str(haloid) + '_' + str(highestres) + '.gdt',
-                outfname="IC" + str(haloid) + "_" + str(highestres) + ".gdt")
-    print("Zoom-in IC created: IC" + str(haloid) + "_" + str(highestres) + ".gdt")
+    shift_parts(infname=outputdir+'/ICraw' + str(haloid) + '_' + str(highestres) + '.gdt',
+                outfname=outputdir+"/IC" + str(haloid) + "_" + str(highestres) + ".gdt")
+    print("Zoom-in IC created: " + outputdir + "/IC" + str(haloid) + "_" + str(highestres) + ".gdt")
     print("Resolution: " + str(highestres))
     print("Padding: " + str(pad))
 #  call('rm ICraw'+str(haloid)+'_'+str(highestres)+'.gdt*', shell=True)
