@@ -1,5 +1,4 @@
 import os
-from src.main import createIC, multipleICcreator
 from src.rockstartools import rockstarselect
 from src.read_config import getproperties
 
@@ -9,7 +8,8 @@ workdir, snapfilebase, parent_ic, cosmology, boxsize, zstart, seedsset, parentre
     parentlabel)
 if not os.path.exists(workdir):
     os.mkdir(workdir)
-if not os.path.exists(workdir + "/halotracing/halolist.txt"):
+halolistfile = workdir + "/halotracing/halolist.txt"
+if not os.path.exists(halolistfile):
     rockstarselect(treefile, mvirmin=10e11, mvirmax=10e12, mindist=10.)
-createIC(40, parentlabel, halolistfolder=workdir + '/halotracing', zoominlevel=12)
-# multipleICcreator(parentlabel, halolistfolder=workdir+'/halotracing', zoominlevel=12, startingatnumber=40)
+else:
+    print("Halo list file already exists in "+halolistfile+"; delete it if you want to recreate it")

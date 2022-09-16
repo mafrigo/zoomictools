@@ -88,7 +88,6 @@ def zoomindiag(file, shrinkon='stars'):
         Rvir, Mvir = pygad.analysis.virial_info(s[pygad.BallMask('1 Mpc', fullsph=True)])
         sb = s[pygad.BallMask(Rvir, fullsph=True)]
         sc = s[pygad.BallMask(0.1 * Rvir, fullsph=True)]
-        zoom = True
         print()
         print()
         #    print "TOTAL: "
@@ -154,28 +153,22 @@ def halfmassradius(file, onlystars=True):
      onlystars : If True, only stars are considered in computing the half-mass radius
                    (so it's more like a 3D half-light radius).
     """
-    import pygad
     s, halo, asf = pygad.prepare_zoom(file)
     Rvir, Mvir = pygad.analysis.virial_info(s)
     sc = s[pygad.BallMask(0.1 * Rvir)]
     if onlystars:
         sc = sc.stars
     stellarm = sum(sc["mass"])
-    mass = 0.
     sortindex = np.argsort(sc["r"])
     radii = np.array(sc["r"])
     radii = radii[sortindex]
     masses = np.array(sc["mass"])
     masses = masses[sortindex]
     cumumass = np.cumsum(masses)
-    #  fmass=scipy.interpolate.interp1d(radii,cumumass-0.5*stellarm)
-    #  Reff=fmass(0)
     Reff1 = (radii[cumumass < 0.5 * stellarm])[-1]
     Reff2 = (radii[cumumass > 0.5 * stellarm])[0]
     m1 = (cumumass[cumumass < 0.5 * stellarm])[-1] - 0.5 * stellarm
     m2 = (cumumass[cumumass > 0.5 * stellarm])[0] - 0.5 * stellarm
     Reff = Reff1 + (abs(m1) / (m2 - m1)) * (Reff2 - Reff1)
-    #  print Reff1, Reff2
-    #  print m1, m2
     print("Half mass radius: " + str(Reff))
     return Reff
