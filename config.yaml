@@ -1,7 +1,7 @@
 music_exec: "MUSIC"
 parent_setups:
   parent3:
-    workdir: '/ptmp/mpa/mfrigo/musicsims/parent3/'
+    workdir: '/u/mfrigo/Software/zoomictools/parent3'
     parent_snaps: '/ptmp/mpa/mfrigo/musicsims/parent3/snap_parent_'
     parent_ic: '/ptmp/mpa/mfrigo/musicsims/parent3/parent.gdt'
     cosmology: 'planck'
