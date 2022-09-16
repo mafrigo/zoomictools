@@ -18,4 +18,5 @@ based on min/max virial mass and distance to other halos.
 starting from a given galaxy ID and going to higher numbers.
 7) Run the zoom simulation with Gadget, including gas, star formation, etc.
 8) Check whether virial mass of zoomed galaxy matches value in parent, and whether there are intruder low resolution particles (with diagnostics.py)
+
 Note: ic_script.py does steps 5 and 6
