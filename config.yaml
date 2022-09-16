@@ -2,8 +2,8 @@ music_exec: "MUSIC"
 parent_setups:
   parent3:
     poslistdir: '/ptmp/mpa/mfrigo/musicsims/parent3/'
-    snapfilebase: '/ptmp/mpa/mfrigo/musicsims/parent3/snap_parent_'
-    ICfile: '/ptmp/mpa/mfrigo/musicsims/parent3/parent.gdt'
+    parent_snaps: '/ptmp/mpa/mfrigo/musicsims/parent3/snap_parent_'
+    parent_ic: '/ptmp/mpa/mfrigo/musicsims/parent3/parent.gdt'
     cosmology: 'planck'
     boxsize: 72
     zstart: 43.029476
@@ -12,10 +12,10 @@ parent_setups:
     lowestres: 4
   P200:
     poslistdir: '/ptmp/mpa/mhirsch/P200/'
-    snapfilebase:
+    parent_snaps:
       - "/ptmp/mpa/loser/SIMULATIONS/P200/snapdir_"
       - "/snap_P200_"
-    ICfile: "/ptmp/mpa/loser/SIMULATIONS/P200/IC/ics_200Mpc_planck.dat"
+    parent_ic: "/ptmp/mpa/loser/SIMULATIONS/P200/IC/ics_200Mpc_planck.dat"
     cosmology: 'planck'
     boxsize: 135.54
     zstart: 63.

@@ -8,9 +8,9 @@ def getproperties(parentlabel):
     For a given parent label, it returns:
 
      poslistdir   : Directory of the position list files.
-     snapfilebase : Name/path of the snapshot files (without the number). If you have multiple subsnapshots, put it
+     parent_snaps : Name/path of the snapshot files (without the number). If you have multiple subsnapshots, put it
                          in the form ["snapshot_dir","/snapshot_name"] (both without the number).
-     ICfile       : Name/path of the initial condition file of the parent simulation.
+     parent_ic    : Name/path of the initial condition file of the parent simulation.
      cosmology    : Choice of cosmological parameters. Can be "planck" or "wmap".
      boxsize      : Size of the cosmological box, in comoving Mpc/h.
      zstart       : Initial redshift of the IC.
@@ -26,7 +26,7 @@ def getproperties(parentlabel):
     for section in cfg["parent_setups"]:
         if parentlabel == section:
             config_dict = cfg["parent_setups"][section]
-            return config_dict["poslistdir"], config_dict["snapfilebase"], config_dict["ICfile"], \
+            return config_dict["poslistdir"], config_dict["parent_snaps"], config_dict["parent_ic"], \
                    config_dict["cosmology"], config_dict["boxsize"], config_dict["zstart"], config_dict["seedsset"], \
                    config_dict["parentres"], config_dict["lowestres"]
     raise IOError("parentlabel " + str(parentlabel) + " does not match any label in config.yaml")

@@ -3,7 +3,7 @@
 - Gadget2/3
 - Rockstar (https://bitbucket.org/gfcstanford/rockstar)
 - Python >3.4
-- Python modules in requirements.txt
+- Python modules in requirements.txt (notably pygad: https://bitbucket.org/broett/pygad/)
 
 # Workflow:
 1) Create IC for dark matter only parent simulation with MUSIC.
@@ -11,7 +11,8 @@
 3) Run rockstar on parent simulation to create a halo tree file.
 4) Run rockstarselect() with the tree file to select halos you are interested in, 
 based on min/max virial mass and distance to other halos.
-5) Add configuration for your IC setup in config.yaml. In particular you should use the same seeds as in the parent.
+5) Add configuration for your IC setup in config.yaml. 
+In particular you should use the same cosmology, zstart, boxsize and seeds (in the resolutions levels where parent and zoom overlap) as in the parent.
 6) Create zoom initial condition with createIC(). Use id of a galaxy from the rockstarselect() output (they are different from the rockstar ids)
 and the label of your new config.yaml setup. You can also use multipleICcreator() to create many ICs at the same time, 
 starting from a given galaxy ID and going to higher numbers.
