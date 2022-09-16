@@ -29,7 +29,8 @@ def createIC(haloid, parentlabel, zoominlevel=11, halolistfolder='./halotracing'
     if os.path.isfile(poslistdir + "/poslist" + str(haloid) + ".txt") and skiptracing:
         print("Position list file for this halo already present; skipping halo tracing.")
     else:
-        trace(haloid, parentlabel=parentlabel, halolocfile=halolistfolder + '/halo' + str(haloid) + '.txt')
+        trace(haloid, parentlabel=parentlabel, halolocfile=halolistfolder + '/halo' + str(haloid) + '.txt',
+              outputdir=outputdir)
         call(["cp", "poslist" + str(haloid) + ".txt", poslistdir])
 
     musicgadget3(haloid, parentlabel=parentlabel, highestres=zoominlevel, initialpad=6, regionmode='ellipsoid',

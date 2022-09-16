@@ -144,7 +144,7 @@ def trace(haloid, parentlabel, eps=10., eps2=300., tracefactor=2., preemptivecut
         except AttributeError:
             boxsizempc = 0.001 * s.boxsize.item()
         highres = s[pygad.IDMask(idlist)]
-        np.savetxt('idlist' + str(haloid) + '.txt', highres["ID"])  # list of the IDs
+        np.savetxt(outputdir+'/idlist' + str(haloid) + '.txt', highres["ID"])  # list of the IDs
         if eps2 is not 0:  # pseudoparticle expansion to increase the size of the refinement region
             lenpseudosnap = len(highres["pos"][:, 0]) * npp
             xg = np.ravel(highres["pos"][:, 0].repeat(npp) + np.clip(
@@ -161,7 +161,7 @@ def trace(haloid, parentlabel, eps=10., eps2=300., tracefactor=2., preemptivecut
             print("Opening IC subfiles separately:")
             call(["rm", "idlist" + str(haloid) + ".txt"])
             call(["rm", "poslist" + str(haloid) + ".txt"])
-            np.savetxt('idlist' + str(haloid) + '.txt', idlist)  # list of the IDs
+            np.savetxt(outputdir+'/idlist' + str(haloid) + '.txt', idlist)  # list of the IDs
             poslist = np.empty((0, 3))
             i = 0
             nextfileexists = True
@@ -194,7 +194,7 @@ def trace(haloid, parentlabel, eps=10., eps2=300., tracefactor=2., preemptivecut
             raise IOError('IC file not found')
 
     print('Printing final list ')
-    np.savetxt('poslist' + str(haloid) + '.txt', poslist)  # list of the positions normalized to the box size
+    np.savetxt(outputdir+'/poslist' + str(haloid) + '.txt', poslist)  # list of the positions normalized to the box size
     print('Halo number: ' + str(haloid))
     print('Number of unique IDs: ' + str(len(idlist)))
     print('Number of poslist entries: ' + str(len(poslist)))
