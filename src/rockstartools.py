@@ -50,17 +50,17 @@ def _buildhaloloclist(haloid, scale, id, desc_id, mvir, rvir, x, y, z):
     return scalelist[0:len(mainmvir)], mainmvir, mainrvir, [mainx, mainy, mainz]
 
 
-def rockstarselect(mvirmin, mvirmax, mindist, file='tree_0_0_0.dat', type='tree', savelist=True,
+def rockstarselect(file, mvirmin=10e11, mvirmax=10e12, mindist=10., type='tree', savelist=True,
                    tracehalos=True, tracefolder='./halotracing/', listfile='halolist.txt'):
     """
     Reads the Rockstar merger tree or halo list file and finds halos with mvirmin < halo mass < mvirmax
     and whose closest halo is at least mindist away. Prints the selected halos on screen.
 
     Parameters:
-     mvirmin     : Minimum mass of the halo.
-     mvirmax     : Maximum mass of the halo.
-     mindist     : Minimum distance to the next significant (M>10**11 Msol) halo.
-     file        : (Optional) Path of the Rockstar merger tree / halo list file.
+     file        : Path of the Rockstar merger tree / halo list file.
+     mvirmin     : Minimum mass of the halo (Msol).
+     mvirmax     : Maximum mass of the halo (Msol).
+     mindist     : Minimum distance to the next significant (M>10**11 Msol) halo (kpc).
      type        : Type of Rockstar file. Can be 'tree' (merger trees) or 'list' (halo list).
      savelist    : If true, saves the list of selected halos in tracefolder/listfile.
      tracehalos  : If true, traces each selected halo across the simulation and saves its
