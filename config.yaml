@@ -1,7 +1,7 @@
 music_exec: "MUSIC"
 parent_setups:
   parent3:
-    poslistdir: '/ptmp/mpa/mfrigo/musicsims/parent3/'
+    workdir: '/ptmp/mpa/mfrigo/musicsims/parent3/'
     parent_snaps: '/ptmp/mpa/mfrigo/musicsims/parent3/snap_parent_'
     parent_ic: '/ptmp/mpa/mfrigo/musicsims/parent3/parent.gdt'
     cosmology: 'planck'
@@ -11,7 +11,7 @@ parent_setups:
     parentres: 9
     lowestres: 4
   P200:
-    poslistdir: '/ptmp/mpa/mhirsch/P200/'
+    workdir: '/ptmp/mpa/mhirsch/P200/'
     parent_snaps:
       - "/ptmp/mpa/loser/SIMULATIONS/P200/snapdir_"
       - "/snap_P200_"
