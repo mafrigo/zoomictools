@@ -17,4 +17,5 @@ based on min/max virial mass and distance to other halos.
 , your resolution level of choice, and the label of your new config.yaml setup. You can also use multipleICcreator() to create many ICs at the same time, 
 starting from a given galaxy ID and going to higher numbers.
 7) Run the zoom simulation with Gadget, including gas, star formation, etc.
+8) Check whether virial mass of zoomed galaxy matches value in parent, and whether there are intruder low resolution particles (with diagnostics.py)
 Note: ic_script.py does steps 5 and 6

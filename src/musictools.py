@@ -141,12 +141,11 @@ def writemusicparam(haloid, highestres=11, parentres=9, lowestres=4, regionmode=
     param.append(r"transfer		= eisenstein" + "\n")
     param.append(r"" + "\n")
     param.append(r"[random]" + "\n")
-    for i in np.arange(17):
-        if i > 6 and i <= highestres:
-            if i >= parentres:
-                param.append(r"seed[" + str(i) + "]     = " + str(seeds[i - 7]) + "\n")
-            else:
-                param.append(r"#seed[" + str(i) + "]     = " + str(seeds[i - 7]) + "\n")
+    for i in range(7, highestres+1):
+        if i >= parentres:
+            param.append(r"seed[" + str(i) + "]     = " + str(seeds[i - 7]) + "\n")
+        else:
+            param.append(r"#seed[" + str(i) + "]     = " + str(seeds[i - 7]) + "\n")
 
     param.append(r"" + "\n")
     param.append(r"[output]" + "\n")
@@ -167,6 +166,6 @@ def writemusicparam(haloid, highestres=11, parentres=9, lowestres=4, regionmode=
     param.append(r"laplace_order		= 6" + "\n")
     param.append(r"grad_order		= 6" + "\n")
     of = open(filename, "w")
-    for l in param:
-        of.write(l)
+    for line in param:
+        of.write(line)
     of.close()
